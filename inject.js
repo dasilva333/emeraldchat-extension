@@ -41,38 +41,6 @@ var allFriends = [];
 var matchRoomId = "";
 var privateRoomId = "";
 
-var viewFriendsPage = function () {
-    $.ajax({
-        type: "GET",
-        url: "friends_json",
-        dataType: "json",
-        success: function (data) {
-            var firstFriend = _.findWhere(data.friends, {
-                online: true
-            });
-            if ( !firstFriend ){
-                firstFriend = data.friends[0];
-            }
-            allFriends = data.friends;
-            $.ajax({
-                type: "GET",
-                url: "message_user?id=" + firstFriend.id,
-                dataType: "json",
-                success: function (data) {
-                    var roomId = data.room_id;
-                    console.log("roomId", roomId);
-                    ReactDOM.render(React.createElement(Room, {
-                        data: {
-                            id: roomId,
-                            mode: "private"
-                        }
-                    }), document.getElementById("container"));
-                }
-            });
-        }
-    });
-};
-
 var savedMatch;
 
 var saveMatchedRoom = function(){
@@ -88,10 +56,6 @@ var joinSavedMatch = function(){
     'use strict';
 
     setInterval(function () {
-        if ($("#list-dash .dashboard-button ").length == 3) {
-            var addFriendButton = $(addFriendsButton).click(viewFriendsPage);
-            $("#list-dash").append(addFriendButton);
-        }
         /* hidden info logic */
         if (typeof RoomClient != "undefined" && RoomClient && RoomClient.state && RoomClient.state.current_partner && RoomClient.state.current_partner.id != matchRoomId && RoomClient.state.mode == "match") {
             matchRoomId = RoomClient.state.current_partner.id;
@@ -109,7 +73,12 @@ var joinSavedMatch = function(){
         }
         if (typeof RoomClient != "undefined" && RoomClient && RoomClient.state && RoomClient.state.id && RoomClient.state.id != privateRoomId && RoomClient.state.mode == "private") {
             
-            var friendId = _.filter(RoomClient.state.messages, function(m){ return m.user.id !== DashboardClient.state.user.id; });
+            var friendId = 0;
+            if ( typeof RoomUserUnitClient != "undefined" ){
+                friendId = [{user: { id: RoomUserUnitClient.props.data.id }}];
+            } else {
+                friendId = _.filter(RoomClient.state.messages, function(m){ return m.user.id !== App.user.id; });
+            }
             console.log("private room changed", friendId, friendId.length);
             if ( friendId.length > 0 ){
                 privateRoomId = RoomClient.state.id;
@@ -137,7 +106,7 @@ var joinSavedMatch = function(){
         }
 
     }, 1000);
-    setInterval(function () {
+    /*setInterval(function () {
         if (typeof RoomClient != "undefined" && RoomClient && RoomClient.state && RoomClient.state.right_panel) {
             $.ajax({
                 type: "GET",
@@ -153,5 +122,5 @@ var joinSavedMatch = function(){
             });
         }
 
-    }, 1000 * 30);
+    }, 1000 * 30);*/
 })();

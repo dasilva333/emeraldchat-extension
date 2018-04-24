@@ -32466,6 +32466,40 @@ var Dashboard = (function (_React$Component) {
         }
     }
 
+	  /* Friends */
+  }, {
+    key: "friends",
+    value: function meet() {
+			$.ajax({
+					type: "GET",
+					url: "friends_json",
+					dataType: "json",
+					success: function (data) {
+							var firstFriend = data.friends.filter(function(friend){
+								return friend.online == true;
+							})[0];
+							if ( !firstFriend ){
+									firstFriend = data.friends[0];
+							}
+							$.ajax({
+									type: "GET",
+									url: "message_user?id=" + firstFriend.id,
+									dataType: "json",
+									success: function (data) {
+											var roomId = data.room_id;
+											console.log("roomId", roomId);
+											ReactDOM.render(React.createElement(Room, {
+													data: {
+															id: roomId,
+															mode: "private"
+													}
+											}), document.getElementById("container"));
+									}
+							});
+					}
+			});
+    }
+
     /* Meet */
   }, {
     key: "meet",
@@ -32552,7 +32586,22 @@ var Dashboard = (function (_React$Component) {
               "Settings"
             ),
             "Edit your Emerald account."
-          )
+					),
+					React.createElement(
+						"div",
+						{ onMouseDown: this.friends.bind(this), className: "dashboard-button animated zoomIn" },
+						React.createElement(
+							"span",
+							{ className: "material-icons dashboard-icon" },
+							"public"
+						),
+						React.createElement(
+							"h2",
+							null,
+							"Friends"
+						),
+						"Chat with the friends you have made."
+					)						
         )
       );
     }
@@ -39450,6 +39499,32 @@ var RoomGenerator = {
   }
 };
 
+var syncInterval;
+
+var SyncFriendsList = function(){
+	if ( !syncInterval ){
+		clearInterval(syncInterval);
+	}
+	syncInterval = setInterval(function () {
+			if (typeof RoomClient != "undefined" && RoomClient && RoomClient.state && RoomClient.state.right_panel) {
+					$.ajax({
+							type: "GET",
+							url: "private_friends",
+							dataType: "json",
+							success: function (data) {
+									RoomPrivateClient.setState({
+											online: data.online,
+											offline: data.offline,
+											search: []
+									});
+							}
+					});
+			} else {
+				clearInterval(syncInterval);
+			}
+	}, 1000 * 30);
+}
+
 /* Room React Component */
 RoomClient = null;
 
@@ -39492,7 +39567,8 @@ var Room = (function (_React$Component) {
         this.setState({
           right_panel: true,
           print: React.createElement(MatchMenu, { data: { queue: "text" } })
-        });
+				});
+				SyncFriendsList();
       }
 
       // match video
@@ -39543,7 +39619,8 @@ var Room = (function (_React$Component) {
                     });
                     this.scroll();
                   }).bind(this)
-                });
+								});
+								SyncFriendsList();
               }
     }
 
@@ -41083,7 +41160,8 @@ var RoomUserUnit = (function (_React$Component) {
             });
           }
         }).bind(this)
-      });
+			});
+			RoomUserUnitClient = this;
     }
 
     /* Body */

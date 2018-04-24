@@ -1,10 +1,8 @@
 # Features
 
-- Profile stats for meets
-- Profile stats for private chats
-- Focus on input when chat starts
-- Auto refresh friends list
-- Enabled friends list during meets
-- Friends quick view from Dashboard
+- Auto-focus on input when chat starts
+- Auto refresh friends list on the right side panel
+- Enabled friends list while meeting new people
+- Access Friends list quickly from Dashboard
 - Remembers Gold options set in local cookies
-- Attach notes to users
+- Attach custom notes and reminders for users
