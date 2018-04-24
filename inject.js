@@ -28,20 +28,11 @@
     d.getElementsByTagName('head')[0].appendChild(script);
 }(document));
 
-
-var addFriendsButton = '<div class="dashboard-button animated zoomIn">\
-    <span class="material-icons dashboard-icon">public</span>\
-    <h2>Friends</h2>\
-    Chat with the friends you have made.\
-</div>';
-
 var profileTemplate = "";
 var firstFriend;
-var allFriends = [];
+var savedMatch;
 var matchRoomId = "";
 var privateRoomId = "";
-
-var savedMatch;
 
 var saveMatchedRoom = function(){
     savedMatch = { messages: RoomClient.state.messages.slice(0), id: App.room.id };
@@ -106,21 +97,4 @@ var joinSavedMatch = function(){
         }
 
     }, 1000);
-    /*setInterval(function () {
-        if (typeof RoomClient != "undefined" && RoomClient && RoomClient.state && RoomClient.state.right_panel) {
-            $.ajax({
-                type: "GET",
-                url: "private_friends",
-                dataType: "json",
-                success: function (data) {
-                    RoomPrivateClient.setState({
-                        online: data.online,
-                        offline: data.offline,
-                        search: []
-                    });
-                }
-            });
-        }
-
-    }, 1000 * 30);*/
 })();
