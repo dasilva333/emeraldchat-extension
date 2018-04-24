@@ -80,56 +80,6 @@ chrome.runtime.onInstalled.addListener(function() {
 
 var urlsRedirect = [];
 
-/*
-// Redirects bootstrap.min.js script.
-chrome.webRequest.onBeforeRequest.addListener(function () {
-    if (isEnabled()) {
-        return {redirectUrl: 'http://' + destinationHost + '/websocket.js'};
-    }
-}, {
-    urls: [
-        '*://' + targetHost + '/js/bootstrap.min.js*'
-    ],
-    types: ["script"]
-},
-["blocking"]);
-
-chrome.webRequest.onBeforeRequest.addListener(function () {
-    if (isEnabled()) {
-        return {redirectUrl: 'http://' + destinationHost + testEnv + '/GameConfiguration.json'};
-    }
-}, {
-    urls: [
-        '*://configs-web.agario.miniclippt.com/live/v4/80/GameConfiguration.json*'
-    ]
-},
-["blocking"]);
-
-chrome.webRequest.onBeforeRequest.addListener(function () {
-    if (isEnabled()) {
-        return {redirectUrl: 'http://' + destinationHost + testEnv + '/ext.js'};
-    }
-}, {
-    urls: [
-        '*://' + targetHost + '/mc/agario.js*'
-    ],
-    types: ["script"]
-},
-["blocking"]);
-
-chrome.webRequest.onBeforeRequest.addListener(function () {
-    if (isEnabled()) {
-        return {redirectUrl: 'http://' + destinationHost + testEnv + '/agario.core.js'};
-    }
-}, {
-    urls: [
-        '*://' + targetHost + '/agario.core.js*'
-    ],
-    types: ["script"]
-},
-["blocking"]);
-*/
-
 //https://www.emeraldchat.com/assets/application-0120efcaba9c0fdd85da45116f23024479dd3379acad4bed051c31e9fba4bf29.js
 
 chrome.webRequest.onBeforeRequest.addListener(function (details) {

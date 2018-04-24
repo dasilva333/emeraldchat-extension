@@ -73,6 +73,17 @@ var viewFriendsPage = function () {
     });
 };
 
+var savedMatch;
+
+var saveMatchedRoom = function(){
+    savedMatch = { messages: RoomClient.state.messages.slice(0), id: App.room.id };
+};
+
+var joinSavedMatch = function(){
+    RoomClient.switch({ id: savedMatch.id, mode: "match" })
+    RoomClient.state.messages = RoomClient.state.messages.concat(savedMatch.messages);
+};
+
 (function () {
     'use strict';
 
