@@ -1,0 +1,16 @@
+{
+   "appDesc": {
+      "description": "emerald chat mod.",
+      "message": "chat mod."
+   },
+   "appDisabled": {
+      "message": "Emerald Mod Disabled"
+   },
+   "appEnabled": {
+      "message": "Emerald Mod Enabled"
+   },
+   "appName": {
+      "description": "Extended skins for famous Agar.io game.",
+      "message": "EmeraldChat Mod"
+   }
+}
