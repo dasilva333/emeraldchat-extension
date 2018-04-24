@@ -35596,6 +35596,85 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /* global React */
 
+var NotesPanel = (function (_React$Component) {
+  _inherits(NotesPanel, _React$Component);
+
+  /* Initial State */
+
+  function NotesPanel(props) {
+    _classCallCheck(this, NotesPanel);
+
+    _get(Object.getPrototypeOf(NotesPanel.prototype), "constructor", this).call(this, props);
+    this.state = {
+      tab: "loading"
+		};
+		NotesPanelClient = this;
+  }
+
+  /* Mount */
+
+  _createClass(NotesPanel, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      
+    }
+
+    /* Close */
+  }, {
+    key: "close",
+    value: function close() {
+      MenuReactMicro.close();
+    }
+    /* Save Notes */
+  }, {
+		key: "save_notes",
+		value: function save_notes(){
+			localStorage.setItem("notes_" + this.props.id, $("#notes-area").val());
+		}
+		/* Body */
+	}, {
+    key: "body",
+    value: function body() {
+			return React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "textarea",
+          { id: "notes-area", onKeyUp: this.save_notes.bind(this), style: { display: 'block', width: '100%', height: '400px' } },
+          localStorage.getItem("notes_" + this.props.id)
+        )
+      );
+    }
+
+    /* Render */
+  }, {
+    key: "render",
+    value: function render() {
+
+			var body = React.createElement(
+				"div",
+				{ key: "notes_menu" },
+				"Notes about friend",
+				React.createElement("br", null),
+				React.createElement("br", null),
+				this.body(),
+				React.createElement(
+					"div",
+					{ className: "ui-menu-buttons" },
+					React.createElement(
+						"div",
+						{ onMouseDown: this.close.bind(this), className: "ui-button-text" },
+						"Close"
+					)
+				)
+			);
+      return body;
+    }
+  }]);
+
+  return NotesPanel;
+})(React.Component);
+
 var ModPanel = (function (_React$Component) {
   _inherits(ModPanel, _React$Component);
 
@@ -38477,11 +38556,11 @@ var MatchMenu = (function (_React$Component) {
     _get(Object.getPrototypeOf(MatchMenu.prototype), "constructor", this).call(this, props);
     this.state = {
       wait_delay: 3,
-      karma_filter: false,
-      gender_filter: false,
-      gender_selected: "f",
-      min_karma: 0,
-      filter_temps: false,
+      karma_filter: Cookies.get("karma_filter") == "true" || false,
+      gender_filter: Cookies.get("gender_filter") == "true" || false,
+      gender_selected: Cookies.get("gender_selected") || "f",
+      min_karma: parseInt(Cookies.get("min_karma")) || 0,
+      filter_temps: Cookies.get("filter_temps") == "true" || false,
       queue: this.props.data.queue
     };
     MatchMenuClient = this;
@@ -38539,7 +38618,7 @@ var MatchMenu = (function (_React$Component) {
       // karma slide set default
       var karma_slider = document.getElementById("karma-min-input");
       if (!!karma_slider) {
-        document.getElementById("karma-min-input").value = this.state.min_karma;
+				document.getElementById("karma-min-input").value = this.state.min_karma;
       }
     }
 
@@ -38937,6 +39016,7 @@ var MatchMenu = (function (_React$Component) {
   }, {
     key: "match_temps_switch",
     value: function match_temps_switch(e) {
+			Cookies.set("filter_temps", !this.state.filter_temps);
       this.setState({
         filter_temps: !this.state.filter_temps
       });
@@ -38947,14 +39027,16 @@ var MatchMenu = (function (_React$Component) {
     key: "karma_min_change",
     value: function karma_min_change() {
       var value = parseInt(document.getElementById("karma-min-input").value);
-      this.setState({ min_karma: value });
+			Cookies.set("min_karma", this.state.min_karma);
+			this.setState({ min_karma: value });			
     }
 
     /* Set gender filter */
   }, {
     key: "set_gender_filter",
     value: function set_gender_filter() {
-      var value = document.getElementById("gender-select").value;
+			var value = document.getElementById("gender-select").value;
+			Cookies.set("gender_selected", value);
       this.setState({ gender_selected: value });
     }
 
@@ -38974,7 +39056,8 @@ var MatchMenu = (function (_React$Component) {
       } else {
 
         // karma filter
-        var filter_by_karma = null;
+				var filter_by_karma = null;
+				Cookies.set("karma_filter", this.state.karma_filter);
         if (this.state.karma_filter == true) {
           filter_by_karma = React.createElement(
             "span",
@@ -38994,7 +39077,8 @@ var MatchMenu = (function (_React$Component) {
         }
 
         // gender filter
-        var gender_filter = null;
+				var gender_filter = null;
+				Cookies.set("gender_filter", this.state.gender_filter);
         if (this.state.gender_filter == true) {
           gender_filter = React.createElement(
             "span",
@@ -39009,7 +39093,7 @@ var MatchMenu = (function (_React$Component) {
               { style: { marginBottom: '13px' }, className: "ui-select", htmlFor: "gender-select" },
               React.createElement(
                 "select",
-                { defaultValue: "f", onChange: this.set_gender_filter.bind(this), name: "gender-select", id: "gender-select" },
+                { defaultValue: this.state.gender_selected, onChange: this.set_gender_filter.bind(this), name: "gender-select", id: "gender-select" },
                 React.createElement(
                   "option",
                   { value: "m" },
@@ -39052,7 +39136,7 @@ var MatchMenu = (function (_React$Component) {
             { className: "m4" },
             "filter matches by karma"
           ),
-          React.createElement(Switch, { data: { style: { marginBottom: '15px' }, checked: false, on_check: this.filter_karma_switch.bind(this) } }),
+          React.createElement(Switch, { data: { style: { marginBottom: '15px' }, checked: this.state.karma_filter, on_check: this.filter_karma_switch.bind(this) } }),
           filter_by_karma
         );
       }
@@ -45188,6 +45272,19 @@ var UserView = (function (_React$Component) {
       ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(this).parentNode);
     }
 
+    /* Notes Panel */
+  }, {
+    key: "notes",
+    value: function notes() {
+      element = React.createElement(
+        MenuMicro,
+        null,
+        React.createElement(NotesPanel, { id: this.state.user.id })
+      );
+      ReactDOM.render(element, document.getElementById("ui-hatch-2"));
+      this.close();
+    }
+
     /* Mod Panel */
   }, {
     key: "mod_panel",
@@ -45510,8 +45607,8 @@ var UserView = (function (_React$Component) {
         mute,
         React.createElement(
           "div",
-          { onMouseDown: this.close.bind(this), className: "user-profile-micro-button" },
-          "Close"
+          { onMouseDown: this.notes.bind(this), className: "user-profile-micro-button" },
+          "Note"
         )
       );
     }

@@ -114,17 +114,24 @@ var joinSavedMatch = function(){
             if ( friendId.length > 0 ){
                 privateRoomId = RoomClient.state.id;
                 friendId = friendId[0].user.id;
-                var privateProfile = _.findWhere(allFriends, { id: friendId });
-                console.log("friends profile", friendId, privateProfile);
-                privateProfile.created_since = moment(privateProfile.created_at).fromNow();
-                privateProfile.interestsText = _.pluck(privateProfile.interests, 'name').join(", ");
-    
-                var privateProfileInfo = $("#profileInfo");
-                if (privateProfileInfo.length) {
-                    privateProfileInfo.html(profileTemplate(privateProfile));
-                } else {
-                    jQuery("#messages").append(profileTemplate(privateProfile));
-                }
+                $.ajax({
+                    type: "GET",
+                    url: "/profile_json?id=" + friendId ,
+                    dataType: "json" ,
+                    success: function(data){
+                        var privateProfile = data.user;
+                        console.log("friends profile", friendId, privateProfile);
+                        privateProfile.created_since = moment(privateProfile.created_at).fromNow();
+                        privateProfile.interestsText = _.pluck(privateProfile.interests, 'name').join(", ");
+            
+                        var privateProfileInfo = $("#profileInfo");
+                        if (privateProfileInfo.length) {
+                            privateProfileInfo.html(profileTemplate(privateProfile));
+                        } else {
+                            jQuery("#messages").append(profileTemplate(privateProfile));
+                        }
+                    }
+                });                
             }
             
         }
