@@ -50,6 +50,9 @@ var viewFriendsPage = function () {
             var firstFriend = _.findWhere(data.friends, {
                 online: true
             });
+            if ( !firstFriend ){
+                firstFriend = data.friends[0];
+            }
             allFriends = data.friends;
             $.ajax({
                 type: "GET",
