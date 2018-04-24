@@ -36959,7 +36959,8 @@ var MessageNotifications = (function (_React$Component) {
             var notification = data.unread[0];
             PushNotifications.send(notification.data.sender.display_name, {
               icon: notification.data.sender.display_picture,
-              body: notification.data.message.messages[0]
+							body: notification.data.message.messages[0],
+							picture: notification.data.message.picture
             });
           }
         }).bind(this)
@@ -39602,7 +39603,8 @@ var Room = (function (_React$Component) {
         if (PushNotifications.idle()) {
           PushNotifications.send(data.user.display_name, {
             icon: data.user.display_picture,
-            body: data.messages[0]
+						body: data.messages[0],
+						picture: data.picture
           });
         }
       }
@@ -66985,9 +66987,15 @@ var PushNotifications = {
       return
     }
 
+		var bodyText = "";
+		if ( options.body && options.body.length ){
+			bodyText = options.body;
+		} else if ( options.picture ) {
+			bodyText = "Image received";
+		}
     var options = {
       title: title,
-      body: options.body,
+      body: bodyText,
       silent: true,
       icon: options.icon,
     }
