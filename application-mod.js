@@ -39609,7 +39609,8 @@ var Room = (function (_React$Component) {
                     // join
                     App.room.join(this.props.data.id);
 
-                    // print messages
+										// print messages
+										console.log("private messages", data.messages);
                     for (var i = 0; i < data.messages.length; i++) {
                       this.append(data.messages[i]);
                     }
@@ -39853,7 +39854,7 @@ var Room = (function (_React$Component) {
         typing: null,
         mode: data.mode || "default"
       });
-			console.log("joined room");
+			
       // Private
       if (data.mode == "private") {
         $.ajax({
