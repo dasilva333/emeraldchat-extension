@@ -39384,8 +39384,10 @@ var Message = (function (_React$Component) {
         messages = this.props.data.messages.map(function (i) {
           return React.createElement(
             "div",
-            { key: JSON.stringify(i) },
-            _this.process(i)
+						{ key: JSON.stringify(i) },
+						i.split("\n").map(function(l){
+							return React.createElement("div", null, _this.process(l));
+						})            
           );
         });
         return messages;

@@ -7,3 +7,4 @@
 - crop & resize the image to fit the right dimensions (backend change)
 - pictures_load_more API endpoiints is returning an empty array even though there's more results
 - provide timestamps for messages array from default_private_messages endpoint
+- upload messages array to private chat when adding friend while in match mode
