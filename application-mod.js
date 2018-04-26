@@ -40158,10 +40158,17 @@ var Room = (function (_React$Component) {
     value: function ad() {
       var ad = React.createElement("div", { style: { maxWidth: '100%' }, id: "room-ad-hatch" });
       return ad;
-    }
-
-    /* Room Messages */
-  }, {
+		}
+		/* User View */
+	}, 
+	{
+		key: "user_view",
+		value: function user_view(e){
+			console.log("this", arguments);
+			UserViewGenerator.generate({ event: e, user: RoomUserUnitClient.props.data });
+		}
+	},/* Room Messages */
+	{
     key: "room_messages",
     value: function room_messages() {
       var mode = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
@@ -40216,11 +40223,15 @@ var Room = (function (_React$Component) {
           "span",
           { onMouseDown: this.upload_picture.bind(this), className: "room-component-input-icon material-icons" },
           "photo_camera"
+				),
+				React.createElement(
+          "span",
+          { onMouseDown: this.user_view.bind(this), className: "room-component-input-icon material-icons" },
+          "settings"
         )
       );
       return body;
     }
-
     /* Room Input Match */
   }, {
     key: "room_input_match",
