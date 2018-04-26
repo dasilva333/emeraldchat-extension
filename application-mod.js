@@ -16,8 +16,9 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').then((function(registration) {
 
       // success
-      App.serviceWorker = registration
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+			App.serviceWorker = registration;		
+
+      console.log('ServiceWorker registration successful with scope: ', registration);
     }), function(err) {
 
       // fail
@@ -67175,8 +67176,11 @@ var PushNotifications = {
       title: title,
       body: bodyText,
       silent: true,
-      icon: options.icon,
-    }
+			icon: options.icon,
+			actions: [  
+				{action: 'reply', title: '⤻ Reply'}
+			]  
+		 }
     App.serviceWorker.showNotification(title, options);
   },
 

@@ -92,6 +92,17 @@ chrome.webRequest.onBeforeRequest.addListener(function (details) {
     ]
 },
 ["blocking"]);
+/*
+chrome.webRequest.onBeforeRequest.addListener(function (details) {
+    if (isEnabled()) {
+       return {redirectUrl: chrome.extension.getURL('/sw-mod.js') };
+    }
+}, {
+    urls: [
+        'https://www.emeraldchat.com/sw.js'
+    ]
+},
+["blocking"]);*/
 
 
 // Listener for page action icon click event.
