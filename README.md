@@ -8,3 +8,4 @@
 - Attach custom notes and reminders for users
 - Receiving a notification for an image no longer says null
 - Line breaks pasted in message will properly render
+- Browser tab will now alert you when a new notification is displayed

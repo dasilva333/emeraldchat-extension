@@ -23,6 +23,6 @@
    },
    "permissions": [ "webRequest", "webRequestBlocking", "*://*.emeraldchat.com/*", "declarativeContent" ],
    "version": "1.1.8",
-   "web_accessible_resources": [ "icon-48.png", "disabled.png", "/inject.js", "/application-mod.js" ],
+   "web_accessible_resources": [ "icon-48.png", "disabled.png", "favicon_alt.ico", "/inject.js", "/application-mod.js" ],
    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com; object-src 'self'"
 }

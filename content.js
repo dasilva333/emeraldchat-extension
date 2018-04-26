@@ -15,3 +15,13 @@ function injectScript(file, node) {
     th.appendChild(s);
 }
 injectScript( chrome.extension.getURL('/inject.js'), 'body');
+
+function injectFavIcon(file, node) {
+    var th = document.getElementsByTagName('head')[0];
+    var s = document.createElement('link');
+    s.setAttribute('rel', 'icon');
+    s.setAttribute('href', chrome.extension.getURL('/favicon_alt.ico'));
+    s.setAttribute('id',  "link_favicon");
+    th.appendChild(s);
+}
+injectFavIcon();

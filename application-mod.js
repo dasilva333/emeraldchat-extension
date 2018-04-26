@@ -1,13 +1,68 @@
+var flashInterval;
+var altFavIconHref;
+var faveIconLink = [];
+
+var setTabState = function(isDefault){
+	var DEFAULT_TITLE = "Emerald";
+	var NOTIF_TITLE = "New Notification";
+	 if ( faveIconLink.length == 0 ){
+		window.faveIconLink = $("#link_favicon");
+	 }
+	 if ( !altFavIconHref ){
+		window.altFavIconHref = faveIconLink.attr("href");
+	 }
+	 if ( isDefault ){
+		faveIconLink.attr("href", "favicon.ico");
+		document.title = DEFAULT_TITLE;
+	 } else {
+		faveIconLink.attr("href", altFavIconHref);
+		document.title = NOTIF_TITLE;
+	 }
+};
+
 (function() {
   this.App = {};
 
   document.addEventListener('DOMContentLoaded', (function() {
     $('.tooltipped').tooltip({
       delay: 50
-    });
+		});
+		
+		$(document).ready(function(){
+			var hidden, visibilityState, visibilityChange;
+		
+			window.focused = true;
+	
+			if (typeof document.hidden !== "undefined") {
+				hidden = "hidden", visibilityChange = "visibilitychange", visibilityState = "visibilityState";
+			} else if (typeof document.msHidden !== "undefined") {
+				hidden = "msHidden", visibilityChange = "msvisibilitychange", visibilityState = "msVisibilityState";
+			}
+	
+			var document_hidden = document[hidden];		
+	
+			document.addEventListener(visibilityChange, function() {
+				if(document_hidden != document[hidden]) {
+					if(document[hidden]) {
+						// Document hidden
+						focused = false;
+					} else {
+						// Document shown
+						focused = true;
+						clearInterval(flashInterval);
+						setTabState(true);
+					}
+	
+					document_hidden = document[hidden];
+				}
+			});
+		});
+
   }), false);
 
 }).call(this);
+
+
 App.serviceWorker = {}
 
 /* Google Service Worker */
@@ -34272,7 +34327,7 @@ var MeetMenu = (function (_React$Component) {
           "Group Chat ",
           React.createElement(
             "div",
-            { "class": "hot-label" },
+            { "className": "hot-label" },
             "hot"
           )
         ),
@@ -67149,6 +67204,7 @@ module.exports = WebRTC;
   App.promises = {};
 
 }).call(this);
+
 /* Desktop Push Notifications */
 
 var PushNotifications = {
@@ -67181,7 +67237,16 @@ var PushNotifications = {
 				{action: 'reply', title: '⤻ Reply'}
 			]  
 		 }
-    App.serviceWorker.showNotification(title, options);
+		App.serviceWorker.showNotification(title, options);
+		
+		if ( !focused ){
+			if ( flashInterval ) clearInterval(flashInterval);
+			var defaultState = false;
+			flashInterval = setInterval(function(){
+				defaultState = !defaultState;
+				setTabState(defaultState);
+			}, 1000);
+		}
   },
 
   // subscribe
