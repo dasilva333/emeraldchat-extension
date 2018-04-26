@@ -6,3 +6,5 @@
 - Access Friends list quickly from Dashboard
 - Remembers Gold options set in local cookies
 - Attach custom notes and reminders for users
+- Receiving a notification for an image no longer says null
+- Line breaks pasted in message will properly render
