@@ -1,6 +1,7 @@
 var flashInterval;
 var altFavIconHref;
 var faveIconLink = [];
+var urlRegex = new RegExp(/http(s)?:\/\/([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?/gi);
 
 var setTabState = function(isDefault){
 	var DEFAULT_TITLE = "Emerald";
@@ -39424,7 +39425,20 @@ var Message = (function (_React$Component) {
           var src = "https://www.youtube.com/embed/" + v;
           return React.createElement("iframe", { style: { marginTop: '10px', marginBottom: '10px', borderRadius: '4px' }, width: "100%", height: "250", src: src, frameBorder: "0", allowfullscreen: true });
         }
-      }
+			}
+
+			if ( m.indexOf("http://") > -1 || m.indexOf("https://") > -1  ){
+				var parts = m.match(/[\S]+/gi);
+				var elements = parts.map(function(part){
+					if ( part.match(urlRegex) ){
+						return React.createElement("a", { href: part, target: "_blank" }, " " + part + " ");
+					} else {
+						return React.createElement("span", null, part);
+					}					
+				});
+				return elements;
+			}
+
       return m;
     }
 
