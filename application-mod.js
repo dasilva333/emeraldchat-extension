@@ -32540,21 +32540,7 @@ var Dashboard = (function (_React$Component) {
 							if ( !firstFriend ){
 									firstFriend = data.friends[0];
 							}
-							$.ajax({
-									type: "GET",
-									url: "message_user?id=" + firstFriend.id,
-									dataType: "json",
-									success: function (data) {
-											var roomId = data.room_id;
-											console.log("roomId", roomId);
-											ReactDOM.render(React.createElement(Room, {
-													data: {
-															id: roomId,
-															mode: "private"
-													}
-											}), document.getElementById("container"));
-									}
-							});
+							ReactDOM.render(React.createElement(RoomUserUnit, { message: true, key: JSON.stringify(firstFriend), data: firstFriend }), document.getElementById("container"));
 					}
 			});
     }
@@ -41213,7 +41199,11 @@ var RoomUserUnit = (function (_React$Component) {
   function RoomUserUnit(props) {
     _classCallCheck(this, RoomUserUnit);
 
-    _get(Object.getPrototypeOf(RoomUserUnit.prototype), "constructor", this).call(this, props);
+		_get(Object.getPrototypeOf(RoomUserUnit.prototype), "constructor", this).call(this, props);
+		
+		if ( props.message ){
+			this.message();
+		}
   }
 
   /* Message User */
