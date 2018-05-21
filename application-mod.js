@@ -31,7 +31,9 @@ var setTabState = function(isDefault){
 		
 		$(document).ready(function(){
 			var hidden, visibilityState, visibilityChange;
-		
+			
+			setTimeout(function(){ setTabState(true); }, 1000);
+
 			window.focused = true;
 	
 			if (typeof document.hidden !== "undefined") {
@@ -50,7 +52,7 @@ var setTabState = function(isDefault){
 					} else {
 						// Document shown
 						focused = true;
-						clearInterval(flashInterval);
+						clearInterval(flashInterval);						
 						setTabState(true);
 					}
 	
@@ -32538,21 +32540,7 @@ var Dashboard = (function (_React$Component) {
 							if ( !firstFriend ){
 									firstFriend = data.friends[0];
 							}
-							$.ajax({
-									type: "GET",
-									url: "message_user?id=" + firstFriend.id,
-									dataType: "json",
-									success: function (data) {
-											var roomId = data.room_id;
-											console.log("roomId", roomId);
-											ReactDOM.render(React.createElement(Room, {
-													data: {
-															id: roomId,
-															mode: "private"
-													}
-											}), document.getElementById("container"));
-									}
-							});
+							ReactDOM.render(React.createElement(RoomUserUnit, { message: true, key: JSON.stringify(firstFriend), data: firstFriend }), document.getElementById("container"));
 					}
 			});
     }
@@ -40668,10 +40656,6 @@ var RoomChannelSelect = (function (_React$Component) {
       // clear messages
       RoomClient.setState({ messages: [] });
 
-			console.log("room joined -3 ");
-			
-			$("#room-input").focus();
-
       // room updated
       RoomClient.updated = (function () {
 
@@ -41215,7 +41199,11 @@ var RoomUserUnit = (function (_React$Component) {
   function RoomUserUnit(props) {
     _classCallCheck(this, RoomUserUnit);
 
-    _get(Object.getPrototypeOf(RoomUserUnit.prototype), "constructor", this).call(this, props);
+		_get(Object.getPrototypeOf(RoomUserUnit.prototype), "constructor", this).call(this, props);
+		
+		if ( props.message ){
+			this.message();
+		}
   }
 
   /* Message User */
@@ -66658,7 +66646,9 @@ module.exports = WebRTC;
         room_id: id
       }, {
         connected: function() {
-					$("#room-input").focus();
+					setTimeout(function(){
+						$("#room-input").focus();
+					}, 100);					
           return console.log("# client connected to room[" + id + "] #");
         },
         disconnected: function() {
@@ -66666,7 +66656,10 @@ module.exports = WebRTC;
           return console.log("# client disconnected from room[" + id + "] #");
         },
         received: function(data) {
-          console.log("# room received data #");
+					console.log("# room received data #");
+					setTimeout(function(){
+						$("#room-input").focus();
+					}, 100);
           if (App.room.muted.indexOf(data.user.id) === -1) {
             RoomClient.received(data);
           }

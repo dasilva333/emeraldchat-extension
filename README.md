@@ -9,4 +9,5 @@
 - Receiving a notification for an image no longer says null
 - Line breaks pasted in message will properly render
 - Browser tab will now alert you when a new notification is displayed
-- Links are now clickable
+- URLs pasted in the chat will now become links that open in a new tab
+- Ability to open friends popup for any friend in private chat

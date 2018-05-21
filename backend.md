@@ -8,3 +8,6 @@
 - pictures_load_more API endpoiints is returning an empty array even though there's more results
 - provide timestamps for messages array from default_private_messages endpoint
 - upload messages array to private chat when adding friend while in match mode
+- allow api to mark individual messages as read once opened
+- ability to include last_date_online for private_friends api to sort friends lists by clicking offline
+- ability to expand private_friends api Offline list to include everyone
