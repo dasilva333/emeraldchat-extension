@@ -7,7 +7,6 @@
             interpolate: /\{\{(.+?)\}\}/g
         };
         profileTemplate = _.template('<div class="room-component-message-container" id="profileInfo"><div>\
-            <div>Email -  {{ email }}</div>\
             <div>Username -  {{ username }}</div>\
             <div>Bio -  {{ bio }}</div>\
             <div>Interests -  {{ interestsText }}</div>\
